@@ -17,14 +17,25 @@ app.get("/", function (request, response) {
 });
 
 //START OF YOUR CODE...
-app.get("/quotes", function (request, response) {
-  response.json(quotes);
+app.get("/quotes", function (req, res) {
+  res.json(quotes);
 });
 
-app.get("/quotes/random", function (request, response) {
-  //response.json(quotes);
+app.get("/quotes/random", function (req, res) {
+  res.json(pickFromArray(quotes));
+});
 
-  response.json(pickFromArray(quotes));
+app.get("/search", function (req, res) {
+  const { term } = req.query;
+
+  let result = quotes.filter((el) => {
+    return (
+      el.quote.toLowerCase().includes(term.toLowerCase()) ||
+      el.author.toLowerCase().includes(term.toLowerCase())
+    );
+  });
+
+  res.json(result);
 });
 //...END OF YOUR CODE
 
